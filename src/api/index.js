@@ -32,3 +32,16 @@ export const fetchDailyData = async () => {
     console.error(error);
   }
 };
+
+export const fetchCountries = async () => {
+  try {
+    const {
+      data: { countries },
+    } = await axios.get(`${url}/countries`);
+    const modifiedData = countries.map((country) => country.name);
+    console.log({modifiedData});
+    return modifiedData;
+  } catch (error) {
+    console.error(error);
+  }
+};
