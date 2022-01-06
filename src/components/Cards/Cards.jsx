@@ -8,91 +8,56 @@ const Cards = ({ data: { confirmed, deaths, recovered, lastUpdate } }) => {
   if (!confirmed) {
     return 'Loading...';
   }
+  const cardsMap = [
+    {
+      title: 'Infected',
+      text: 'Number of active cases of covid-19',
+      style: 'infected',
+      value: confirmed.value,
+    },
+    {
+      title: 'Recovered',
+      text: 'Number of recovered cases of covid-19',
+      style: 'recovered',
+      value: recovered.value,
+    },
+    {
+      title: 'Deaths',
+      text: 'Number of Deaths due to covid-19',
+      style: 'deaths',
+      value: deaths.value,
+    },
+  ];
   return (
     <div className={styles.container}>
       <Grid container spacing={3} justify="center">
-        <Grid
-          item
-          xs={12}
-          md={3}
-          component={Card}
-          className={cx(styles.card, styles.infected)}
-        >
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Infected
-            </Typography>
-            <Typography variant="h5">
-              <CountUp
-                start={0}
-                end={confirmed.value}
-                duration={2.5}
-                separator=","
-              />
-            </Typography>
-            <Typography color="textSecondary">
-              {new Date(lastUpdate).toDateString()}
-            </Typography>
-            <Typography variant="body2">
-              Number of active cases of covid-19
-            </Typography>
-          </CardContent>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          md={3}
-          component={Card}
-          className={cx(styles.card, styles.recovered)}
-        >
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Recovered
-            </Typography>
-            <Typography variant="h5">
-              <CountUp
-                start={0}
-                end={recovered.value}
-                duration={2.5}
-                separator=","
-              />
-            </Typography>
-            <Typography color="textSecondary">
-              {new Date(lastUpdate).toDateString()}
-            </Typography>
-
-            <Typography variant="body2">
-              Number of Recoveries of covid-19
-            </Typography>
-          </CardContent>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          md={3}
-          component={Card}
-          className={cx(styles.card, styles.deaths)}
-        >
-          <CardContent>
-            <Typography color="textSecondary" gutterBottom>
-              Deaths
-            </Typography>
-            <Typography variant="h5">
-              <CountUp
-                start={0}
-                end={deaths.value}
-                duration={2.5}
-                separator=","
-              />
-            </Typography>
-            <Typography color="textSecondary">
-              {new Date(lastUpdate).toDateString()}
-            </Typography>
-            <Typography variant="body2">
-              Number of Deaths due to covid-19
-            </Typography>
-          </CardContent>
-        </Grid>
+        {cardsMap.map((cardData, i) => (
+          <Grid
+            item
+            xs={12}
+            md={3}
+            component={Card}
+            className={cx(styles.card, styles[cardData.style])}
+          >
+            <CardContent>
+              <Typography color="textSecondary" gutterBottom>
+                {cardData.title}
+              </Typography>
+              <Typography variant="h5">
+                <CountUp
+                  start={0}
+                  end={cardData.value}
+                  duration={2.5}
+                  separator=","
+                />
+              </Typography>
+              <Typography color="textSecondary">
+                {new Date(lastUpdate).toDateString()}
+              </Typography>
+              <Typography variant="body2">{cardData.text}</Typography>
+            </CardContent>
+          </Grid>
+        ))}
       </Grid>
     </div>
   );
